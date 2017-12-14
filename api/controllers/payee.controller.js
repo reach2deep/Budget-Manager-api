@@ -4,7 +4,7 @@ var Payee = mongoose.model('Payee');
 
 
 // GET ALL PAYEE
-module.exports.payeeGetAll = function (req, res) {
+module.exports.payeeGetAll = function(req, res) {
     console.log('Requested By :', req.user);
     console.log('GET the Payee');
     console.log(req.query);
@@ -42,7 +42,7 @@ module.exports.payeeGetAll = function (req, res) {
         .find()
         .skip(offset)
         .limit(count)
-        .exec(function (err, payees) {
+        .exec(function(err, payees) {
             if (err) {
                 console.log("Error retreiving data");
                 res
@@ -57,13 +57,13 @@ module.exports.payeeGetAll = function (req, res) {
 
 
 // GET Payee BY ID
-module.exports.payeeGetOne = function (req, res) {
+module.exports.payeeGetOne = function(req, res) {
     var payeeId = req.params.payeeId;
-    console.log('GET the Payee ID ' +payeeId);
+    console.log('GET the Payee ID ' + payeeId);
 
     Payee
         .findById(payeeId)
-        .exec(function (err, payee) {
+        .exec(function(err, payee) {
             var response = {
                 status: 200,
                 message: payee
@@ -86,7 +86,7 @@ module.exports.payeeGetOne = function (req, res) {
 };
 
 // TO ADD NEW Payee
-module.exports.payeeAddNew = function (req, res) {
+module.exports.payeeAddNew = function(req, res) {
     console.log('POST new Payee');
     console.log(req.body);
 
@@ -95,10 +95,10 @@ module.exports.payeeAddNew = function (req, res) {
             name: req.body.name,
             address: req.body.address,
             mobile: req.body.mobile,
-            notes: req.body.notes,           
-            createdAt : moment.moment(),
-            createdBy : req.username                       
-        }, function (err, payee) {
+            notes: req.body.notes,
+            createdAt: moment().format('YYYY-MM-DD HH:mm:ss.000').toString() + 'Z',
+            createdBy: req.username
+        }, function(err, payee) {
             var response = {
                 status: 200,
                 message: payee
@@ -120,14 +120,14 @@ module.exports.payeeAddNew = function (req, res) {
 
 
 // TO UPDATE PAYEE
-module.exports.payeeUpdate = function (req, res) {
+module.exports.payeeUpdate = function(req, res) {
 
     var payeeId = req.params.payeeId;
-    console.log('GET the payee ID ' +payeeId);
+    console.log('GET the payee ID ' + payeeId);
 
     Payee
         .findById(payeeId)
-        .exec(function (err, payee) {
+        .exec(function(err, payee) {
             var response = {
                 status: 200,
                 message: payee
@@ -145,16 +145,16 @@ module.exports.payeeUpdate = function (req, res) {
             if (response.status !== 200) {
                 res.status(response.status)
                     .json(response.message);
-            } else {                
+            } else {
 
-                payee.name= req.body.name,
-                payee.address= req.body.address,
-                payee.mobile= req.body.mobile,
-                payee.notes= req.body.notes,         
-                payee.modifiedAt = moment.moment(),
-                payee.modifiedBy = req.username,
+                payee.name = req.body.name,
+                    payee.address = req.body.address,
+                    payee.mobile = req.body.mobile,
+                    payee.notes = req.body.notes,
+                    payee.modifiedAt = moment().format('YYYY-MM-DD HH:mm:ss.000').toString() + 'Z',
+                    payee.modifiedBy = req.username,
 
-                payee.save(function (err, updatedIncome) {
+                    payee.save(function(err, updatedIncome) {
 
                         if (err) {
 
@@ -176,13 +176,13 @@ module.exports.payeeUpdate = function (req, res) {
 
 
 // TO DELETE PAYEE
-module.exports.payeeDelete = function (req, res) {
+module.exports.payeeDelete = function(req, res) {
     var payeeId = req.params.payeeId;
     console.log('DELETE the payee ID ' + payeeId);
 
     Payee
         .findByIdAndRemove(payeeId)
-        .exec(function (err, payee) {
+        .exec(function(err, payee) {
             var response = {
                 status: 204,
                 message: ''
