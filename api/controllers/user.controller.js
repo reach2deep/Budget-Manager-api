@@ -3,10 +3,10 @@ var User = mongoose.model('User');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
-module.exports.register = function (req, res) {
+module.exports.register = function(req, res) {
 
     console.log('Registering User');
-
+    console.log(JSON.stringify(req.body));
     var username = req.body.username;
     var name = req.body.name || null;
     var password = req.body.password;
@@ -15,7 +15,7 @@ module.exports.register = function (req, res) {
         username: username,
         name: name,
         password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-    }, function (err, user) {
+    }, function(err, user) {
         if (err) {
             console.log(err);
             res.status(400).json(err);
@@ -28,17 +28,17 @@ module.exports.register = function (req, res) {
 
 };
 
-module.exports.login = function (req, res) {
+module.exports.login = function(req, res) {
 
-    console.log('Logging in User' ,req.body) ;
+    console.log('Logging in User', req.body);
 
     var username = req.body.username;
     var password = req.body.password;
 
-    
+
     User.findOne({
         username: username
-    }).exec(function (err, user) {
+    }).exec(function(err, user) {
         if (err) {
             console.log(err);
             res.status(400).json(err);
@@ -65,13 +65,13 @@ module.exports.login = function (req, res) {
     });
 };
 
-module.exports.authenticate = function (req, res, next) {
+module.exports.authenticate = function(req, res, next) {
 
     console.log('Authenticating');
     var headerExists = req.headers.authorization;
     if (headerExists) {
         var token = req.headers.authorization.split(' ')[1]; // authorization bearer xxx
-        jwt.verify(token, 's3cr3t', function (error, decoded) {
+        jwt.verify(token, 's3cr3t', function(error, decoded) {
             if (error) {
                 console.log(error);
                 res.status(401).json('Unauthorized');
