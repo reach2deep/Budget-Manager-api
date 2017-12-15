@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Expense = mongoose.model('Expense');
 
 // GET ALL EXPENSES
-module.exports.expenseGetAll = function (req, res) {
-    console.log('Requested By :',req.user);
+module.exports.expenseGetAll = function(req, res) {
+    console.log('Requested By :', req.user);
     console.log('GET the Expense');
     console.log(req.query);
 
@@ -40,7 +40,7 @@ module.exports.expenseGetAll = function (req, res) {
         .find()
         .skip(offset)
         .limit(count)
-        .exec(function (err, expenses) {
+        .exec(function(err, expenses) {
             if (err) {
                 console.log("Error retreiving data");
                 res
@@ -55,13 +55,13 @@ module.exports.expenseGetAll = function (req, res) {
 
 
 // GET EXPENSE BY ID
-module.exports.expenseGetOne = function (req, res) {
+module.exports.expenseGetOne = function(req, res) {
     var expenseId = req.params.expenseId;
     console.log('GET the Expense ID ' + expenseId);
 
     Expense
         .findById(expenseId)
-        .exec(function (err, expense) {
+        .exec(function(err, expense) {
             var response = {
                 status: 200,
                 message: expense
@@ -84,19 +84,25 @@ module.exports.expenseGetOne = function (req, res) {
 };
 
 // TO ADD NEW EXPENSE
-module.exports.addNewExpense = function (req, res) {
+module.exports.addNewExpense = function(req, res) {
     console.log('POST new Expense');
     console.log(req.body);
 
     Expense
         .create({
-            expenseDate: req.body.expenseDate,
+            transactionType: req.body.transactionType,
+            expenseDate: req.body.transactionDate,
             category: req.body.category,
+            categoryId: req.body.categoryid,
             amount: parseFloat(req.body.amount),
             account: req.body.account,
             payee: req.body.payee,
-            notes: req.body.notes
-        }, function (err, expense) {
+            payeeId: req.body.payeeId,
+            notes: req.body.notes,
+            createdAt: req.body.createdAt,
+            createdBy: req.body.createdBy,
+            iscleared: req.body.iscleared
+        }, function(err, expense) {
             var response = {
                 status: 200,
                 message: expense
@@ -118,14 +124,14 @@ module.exports.addNewExpense = function (req, res) {
 
 
 // TO UPDATE EXPENSE
-module.exports.updateExpense = function (req, res) {
+module.exports.updateExpense = function(req, res) {
 
     var expenseId = req.params.expenseId;
     console.log('GET the Expense ID ' + expenseId);
 
     Expense
         .findById(expenseId)
-        .exec(function (err, expense) {
+        .exec(function(err, expense) {
             var response = {
                 status: 200,
                 message: expense
@@ -152,35 +158,35 @@ module.exports.updateExpense = function (req, res) {
                     expense.payee = req.body.payee,
                     expense.notes = req.body.notes,
 
-                expense.save(function (err, updatedExpense) {
+                    expense.save(function(err, updatedExpense) {
 
-                    if (err) {
+                        if (err) {
 
-                        response.status = 500;
-                        response.message = err;
-                    } else {
+                            response.status = 500;
+                            response.message = err;
+                        } else {
 
-                        response.status = 204;
-                        response.message = '';
+                            response.status = 204;
+                            response.message = '';
 
-                        res.status(204)
-                            .json();
+                            res.status(204)
+                                .json();
 
-                    }
-                });
+                        }
+                    });
             }
         });
 };
 
 
 // TO DELETE EXPENSE
-module.exports.deleteExpense = function (req, res) {
+module.exports.deleteExpense = function(req, res) {
     var expenseId = req.params.expenseId;
     console.log('DELETE the Expense ID ' + expenseId);
 
     Expense
         .findByIdAndRemove(expenseId)
-        .exec(function (err, expense) {
+        .exec(function(err, expense) {
             var response = {
                 status: 204,
                 message: ''
@@ -192,9 +198,9 @@ module.exports.deleteExpense = function (req, res) {
             } else {
                 console.log("deleted data");
                 response.status = 400;
-                response.message ='';
+                response.message = '';
             }
-            
+
 
             res.status(response.status)
                 .json(response.message);
@@ -204,7 +210,7 @@ module.exports.deleteExpense = function (req, res) {
 
 
 // GET EXPENSE BY CATERGORY
-module.exports.expenseByCategory = function (req, res) {
+module.exports.expenseByCategory = function(req, res) {
     var categoryId = req.params.categoryId;
     console.log('GET the Expense by category ID ' + categoryId);
 
@@ -225,7 +231,7 @@ module.exports.expenseByCategory = function (req, res) {
         })
         .skip(offset)
         .limit(count)
-        .exec(function (err, expenses) {
+        .exec(function(err, expenses) {
             console.log('Found expenses by Category', expenses.length);
             res
                 .json(expenses);
