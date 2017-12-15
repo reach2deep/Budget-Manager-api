@@ -97,7 +97,7 @@ module.exports.addNewExpense = function(req, res) {
             amount: parseFloat(req.body.amount),
             account: req.body.account,
             payee: req.body.payee,
-            payeeId: req.body.payeeId,
+            payeeId: req.body.payeeid,
             notes: req.body.notes,
             createdAt: req.body.createdAt,
             createdBy: req.body.createdBy,
