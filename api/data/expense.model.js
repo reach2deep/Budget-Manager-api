@@ -17,7 +17,7 @@ var expenseSchema = new mongoose.Schema({
     modifiedBy: String,
     approvedAt: Date,
     approvedBy: String,
-    iscleared: boolean
+    iscleared: String
 });
 
 mongoose.model('Expense', expenseSchema);
