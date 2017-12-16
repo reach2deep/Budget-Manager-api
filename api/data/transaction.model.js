@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
 
-var expenseSchema = new mongoose.Schema({
+var transactionSchema = new mongoose.Schema({
     transactionType: String,
     transactionDate: Date,
     category: String,
     categoryId: String,
     amount: Number,
     account: String,
+    accountId: String,
     payee: String,
     payeeId: String,
     notes: String,
@@ -20,4 +21,4 @@ var expenseSchema = new mongoose.Schema({
     iscleared: String
 });
 
-mongoose.model('Expense', expenseSchema);
+mongoose.model('Transaction', transactionSchema);

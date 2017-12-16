@@ -43,7 +43,7 @@ process.on('SIGTERM', function() {
 });
 
 // BRING IN YOUR SCHEMAS & MODELS
-require('./expense.model');
+require('./transaction.model');
 require('./income.model');
 require('./account.model');
 require('./category.model');
