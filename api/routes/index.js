@@ -7,6 +7,7 @@ var ctrlUser = require('../controllers/user.controller');
 var ctrlIncome = require('../controllers/income.controller');
 var ctrlAccount = require('../controllers/account.controller');
 var ctrlPayee = require('../controllers/payee.controller');
+var ctrlTransaction = require('../controllers/transaction.controller');
 
 //Authentication Routes
 router
@@ -74,5 +75,36 @@ router
     .get(ctrlPayee.payeeGetOne) // get income by Id
     .put(ctrlPayee.payeeUpdate) // to update income
     .delete(ctrlPayee.payeeDelete); // to delete income
+
+//Transaction Routes
+router
+    .route('/transaction')
+    .get(ctrlTransaction.transactionGetAll)// get all expenses
+    .post(ctrlTransaction.transactionAddNew); // to add new expense    
+router
+    .route('/transaction/:transactionId')
+    .get(ctrlTransaction.transactionGetOne) // get expense by Id
+    .put(ctrlTransaction.transactionUpdate) // to update expense
+    .delete(ctrlTransaction.transactionDelete); // to delete expense
+
+router.post('/upload-file', function(req, res, next) {
+        var fstream;
+        if (req.busboy) {
+      
+          req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+            fstream = fs.createWriteStream(__dirname + '/../../public/my-files/' + filename);
+            file.pipe(fstream);
+            fstream.on('close', function(){
+              console.log('file ' + filename + ' uploaded');
+            });
+          });
+          req.busboy.on('finish', function(){
+            console.log('finish, files uploaded ');
+            res.json({ success : true});
+          });
+          req.pipe(req.busboy);
+        }
+      });
+
 
 module.exports = router;

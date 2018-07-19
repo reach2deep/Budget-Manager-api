@@ -49,3 +49,4 @@ require('./account.model');
 require('./category.model');
 require('./payee.model');
 require('./user.model');
+require('./transaction.model');

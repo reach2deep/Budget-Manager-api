@@ -88,6 +88,13 @@ module.exports.addNewExpense = function (req, res) {
     console.log('POST new Expense');
     console.log(req.body);
 
+    // var imageItem = {
+    //     description: req.body.description,
+    //     contentType: req.file.mimetype,
+    //     size: req.file.size,
+    //     img: Buffer(encImg, 'base64')
+    //  };
+
     Expense
         .create({
             expenseDate: req.body.expenseDate,

@@ -7,7 +7,7 @@ var expenseSchema = new mongoose.Schema({
       account: String,
       payee: String,
       notes: String,
-      receipt: [String],
+      receipt: [{ data: Buffer, contentType: String , size : String ,description : String}],
       createdAt: Date,
       createdBy: String,
       modifiedAt: Date,
