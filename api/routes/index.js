@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var ctrlExpense = require('../controllers/expense.controller');
+
 var ctrlCategory = require('../controllers/category.controller');
 var ctrlUser = require('../controllers/user.controller');
-var ctrlIncome = require('../controllers/income.controller');
 var ctrlAccount = require('../controllers/account.controller');
 var ctrlPayee = require('../controllers/payee.controller');
 var ctrlTransaction = require('../controllers/transaction.controller');
@@ -18,30 +17,30 @@ router
     .route('/user/login')
     .post(ctrlUser.login); // to login
 
-//Expense Routes
+//Transaction Routes
 router
-    .route('/expense')
-    .get(ctrlExpense.expenseGetAll) // get all expenses
-    .post(ctrlExpense.addNewExpense); // to add new expense    
+    .route('/transaction/:type')
+    .get(ctrlTransaction.transactionGetAll) // get all Transaction
+    .post(ctrlTransaction.transactionAddNew); // to add new Transaction    
 router
-    .route('/expense/:expenseId')
-    .get(ctrlExpense.expenseGetOne) // get expense by Id
-    .put(ctrlExpense.updateExpense) // to update expense
-    .delete(ctrlExpense.deleteExpense); // to delete expense
-router
-    .route('/category/:categoryId/expense')
-    .get(ctrlExpense.expenseByCategory); // get expense by category
+    .route('/transaction/:transactionId')
+    .get(ctrlTransaction.transactionGetOne) // get Transaction by Id
+    .put(ctrlTransaction.transactionUpdate) // to update Transaction
+    .delete(ctrlTransaction.transactionDelete); // to delete Transaction
+// router
+//     .route('/category/:categoryId/expense')
+//     .get(ctrlExpense.expenseByCategory); // get Transaction by category
 
-//Income Routes
-router
-    .route('/income')
-    .get(ctrlIncome.incomeGetAll) // get all income
-    .post(ctrlIncome.incomeAddNew); // to add new income    
-router
-    .route('/income/:incomeId')
-    .get(ctrlIncome.incomeGetOne) // get income by Id
-    .put(ctrlIncome.incomeUpdate) // to update income
-    .delete(ctrlIncome.incomeDelete); // to delete income
+// //Income Routes
+// router
+//     .route('/income')
+//     .get(ctrlIncome.incomeGetAll) // get all income
+//     .post(ctrlIncome.incomeAddNew); // to add new income    
+// router
+//     .route('/income/:incomeId')
+//     .get(ctrlIncome.incomeGetOne) // get income by Id
+//     .put(ctrlIncome.incomeUpdate) // to update income
+//     .delete(ctrlIncome.incomeDelete); // to delete income
 
 //Account Routes
 router
