@@ -7,6 +7,7 @@ var ctrlUser = require('../controllers/user.controller');
 var ctrlAccount = require('../controllers/account.controller');
 var ctrlPayee = require('../controllers/payee.controller');
 var ctrlTransaction = require('../controllers/transaction.controller');
+var ctrlMaster = require('../controllers/master.controller');
 
 //Authentication Routes
 router
@@ -104,6 +105,10 @@ router.post('/upload-file', function(req, res, next) {
           req.pipe(req.busboy);
         }
       });
+//Master Routes
+router
+.route('/masters')
+.get(ctrlMaster.getAllMasterData) // get all masters
 
 
 module.exports = router;
