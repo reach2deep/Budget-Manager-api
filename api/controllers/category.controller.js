@@ -4,44 +4,9 @@ var Category = mongoose.model('Category');
 
 
 // GET ALL CATEGORY
-module.exports.categoryGetAll = function (req, res) {
-    console.log('Requested By :', req.user);
-    console.log('GET the Category');
-    console.log(req.query);
-
-    var offset = 0;
-    var count = 5;
-    var maxCount = 10;
-
-    if (req.query && req.query.offset) {
-        offset = parseInt(req.query.offset, 10);
-    }
-
-    if (req.query && req.query.count) {
-        offset = parseInt(req.query.count, 10);
-    }
-
-    if (isNaN(offset) || isNaN(count)) {
-        res
-            .status(400)
-            .json({
-                "message": "Invalid query parameters"
-            });
-        return;
-    }
-
-    if (count > maxCount) {
-        res
-            .status(400)
-            .json({
-                "message": "Invalid count parameter"
-            });
-        return;
-    }
+module.exports.categoryGetAll = function (req, res) { 
     Category
-        .find()
-        .skip(offset)
-        .limit(count)
+        .find()        
         .exec(function (err, categories) {
             if (err) {
                 console.log("Error retreiving data");
@@ -152,7 +117,7 @@ module.exports.categoryUpdate = function (req, res) {
                 category.name= req.body.name,
                 category.parent= req.body.parent,  
                 category.type= req.body.type,              
-                category.modifiedAt = moment.moment(),
+                category.modifiedAt = moment().format('YYYY-MM-DD HH:mm:ss.000').toString()+'Z',
                 category.modifiedBy = req.username,
 
                 category.save(function (err, updatedIncome) {
@@ -194,11 +159,10 @@ module.exports.categoryDelete = function (req, res) {
                 response.message = err;
             } else {
                 console.log("deleted data");
-                response.status = 400;
+                response.status = 204;
                 response.message = '';
             }
-
-
+            
             res.status(response.status)
                 .json(response.message);
 

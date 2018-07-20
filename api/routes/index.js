@@ -7,6 +7,7 @@ var ctrlUser = require('../controllers/user.controller');
 var ctrlAccount = require('../controllers/account.controller');
 var ctrlPayee = require('../controllers/payee.controller');
 var ctrlTransaction = require('../controllers/transaction.controller');
+var ctrlMaster = require('../controllers/master.controller');
 
 //Authentication Routes
 router
@@ -74,5 +75,11 @@ router
     .get(ctrlPayee.payeeGetOne) // get income by Id
     .put(ctrlPayee.payeeUpdate) // to update income
     .delete(ctrlPayee.payeeDelete); // to delete income
+
+//Master Routes
+router
+.route('/masters')
+.get(ctrlMaster.getAllMasterData) // get all masters
+
 
 module.exports = router;
