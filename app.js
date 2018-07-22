@@ -3,8 +3,10 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
-
 var routes = require('./api/routes');
+var expressListRoutes = require('express-list-routes');
+
+
 
 // Define the port to run on
 app.set('port', (process.env.PORT || 3000));
@@ -45,6 +47,10 @@ app.use(bodyParser.json());
 // Add some routing
 app.use('/api', routes);
 
+expressListRoutes({ prefix: 'http://localhost:3000/api' }, 'API:', routes );
+
+// specify the folder
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 
 // Listen for requests

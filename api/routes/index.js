@@ -2,12 +2,25 @@ var express = require('express');
 var router = express.Router();
 
 
+
 var ctrlCategory = require('../controllers/category.controller');
 var ctrlUser = require('../controllers/user.controller');
 var ctrlAccount = require('../controllers/account.controller');
 var ctrlPayee = require('../controllers/payee.controller');
 var ctrlTransaction = require('../controllers/transaction.controller');
 var ctrlMaster = require('../controllers/master.controller');
+
+
+
+// var storage = multer.diskStorage({
+//     // destination
+//     destination: function (req, file, cb) {
+//       cb(null, './uploads/')
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.originalname);
+//     }
+//   });
 
 //Authentication Routes
 router
@@ -19,15 +32,15 @@ router
     .post(ctrlUser.login); // to login
 
 //Transaction Routes
-router
-    .route('/transaction/:type')
-    .get(ctrlTransaction.transactionGetAll) // get all Transaction
-    .post(ctrlTransaction.transactionAddNew); // to add new Transaction    
-router
-    .route('/transaction/:transactionId')
-    .get(ctrlTransaction.transactionGetOne) // get Transaction by Id
-    .put(ctrlTransaction.transactionUpdate) // to update Transaction
-    .delete(ctrlTransaction.transactionDelete); // to delete Transaction
+// router
+//     .route('/transaction/:type')
+//     .get(ctrlTransaction.transactionGetAll) // get all Transaction
+//     .post(ctrlTransaction.transactionAddNew); // to add new Transaction    
+// router
+//     .route('/transaction/:transactionId')
+//     .get(ctrlTransaction.transactionGetOne) // get Transaction by Id
+//     .put(ctrlTransaction.transactionUpdate) // to update Transaction
+//     .delete(ctrlTransaction.transactionDelete); // to delete Transaction
 // router
 //     .route('/category/:categoryId/expense')
 //     .get(ctrlExpense.expenseByCategory); // get Transaction by category
@@ -87,28 +100,14 @@ router
     .put(ctrlTransaction.transactionUpdate) // to update expense
     .delete(ctrlTransaction.transactionDelete); // to delete expense
 
-router.post('/upload-file', function(req, res, next) {
-        var fstream;
-        if (req.busboy) {
-      
-          req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-            fstream = fs.createWriteStream(__dirname + '/../../public/my-files/' + filename);
-            file.pipe(fstream);
-            fstream.on('close', function(){
-              console.log('file ' + filename + ' uploaded');
-            });
-          });
-          req.busboy.on('finish', function(){
-            console.log('finish, files uploaded ');
-            res.json({ success : true});
-          });
-          req.pipe(req.busboy);
-        }
-      });
+router
+.route("/upload")
+.post(ctrlTransaction.transactionUploadImage);
+
 //Master Routes
 router
 .route('/masters')
-.get(ctrlMaster.getAllMasterData) // get all masters
+.get(ctrlMaster.getAllMasterData); // get all masters
 
 
 module.exports = router;
