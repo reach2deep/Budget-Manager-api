@@ -21,6 +21,7 @@
     },
     "homepage": "https://github.com/fullstacktraining/mean-stack-hero#readme",
     "dependencies": {
+        "async": "^2.6.1",
         "bcrypt-nodejs": "0.0.3",
         "body-parser": "^1.18.2",
         "express": "^4.13.3",
