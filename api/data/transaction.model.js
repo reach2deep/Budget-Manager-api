@@ -9,7 +9,7 @@ var transactionSchema = new mongoose.Schema({
       payee: String,
       amount: Number,      
       notes: String,
-      receipt: [{ data: Buffer, contentType: String }],
+      receipts: {  name: String, uniqueName: String },
       createdAt: Date,
       createdBy: String,
       modifiedAt: Date,

@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var moment = require('moment');
 var Transaction = mongoose.model('Transaction');
 var multer = require('multer');
+var uuid = require('uuid');
+var path = require('path');
 
 
 
@@ -93,6 +95,13 @@ module.exports.transactionAddNew = function (req, res) {
     console.log('POST new transaction');
     console.log(req.body);
 
+    // if (!req.body.attachments) {
+    //   //  offset = parseInt(req.query.offset, 10);
+    //   console.log('NO ATTACHMENTS');
+    //   req.body.attachments.name= '';
+    //   req.body.attachments.uniqueName ='';     
+    // }
+
     Transaction
         .create({
             transactionType: req.body.transactionType,
@@ -103,6 +112,7 @@ module.exports.transactionAddNew = function (req, res) {
             payee: req.body.payee,
             amount: parseFloat(req.body.amount),                 
             notes: req.body.notes,
+            receipts: { name : req.body.attachments.name , uniqueName : req.body.attachments.uniqueName },
             createdAt : moment().format(),
             createdBy : req.username,
             modifiedAt : null,
@@ -225,10 +235,11 @@ module.exports.transactionUploadImage = function(req,res){
     var storage = multer.diskStorage({
        // destination
             destination: function (req, file, cb) {
-                cb(null, './uploads/')
+                cb(null, './uploads/');
             },
             filename: function (req, file, cb) {
-                var fileUniqueName = util.random_string(16) + Date.now() + path.extname(file.originalname);
+                fileUniqueName = uuid.v4() + path.extname(file.originalname);
+                console.log(fileUniqueName);
                 cb(null, fileUniqueName);
                 //cb(null, file.originalname);
             }
@@ -248,6 +259,9 @@ module.exports.transactionUploadImage = function(req,res){
                 // move your file to destination
             });
             res.end(fileUniqueName);
+           // console.log(' IN RES');
+            // res.status(200)
+            // .json(fileUniqueName);
         }
     });
 

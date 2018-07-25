@@ -5,43 +5,9 @@ var Payee = mongoose.model('Payee');
 
 // GET ALL PAYEE
 module.exports.payeeGetAll = function(req, res) {
-    console.log('Requested By :', req.user);
-    console.log('GET the Payee');
-    console.log(req.query);
-
-    var offset = 0;
-    var count = 5;
-    var maxCount = 10;
-
-    if (req.query && req.query.offset) {
-        offset = parseInt(req.query.offset, 10);
-    }
-
-    if (req.query && req.query.count) {
-        offset = parseInt(req.query.count, 10);
-    }
-
-    if (isNaN(offset) || isNaN(count)) {
-        res
-            .status(400)
-            .json({
-                "message": "Invalid query parameters"
-            });
-        return;
-    }
-
-    if (count > maxCount) {
-        res
-            .status(400)
-            .json({
-                "message": "Invalid count parameter"
-            });
-        return;
-    }
+    
     Payee
         .find()
-        .skip(offset)
-        .limit(count)
         .exec(function(err, payees) {
             if (err) {
                 console.log("Error retreiving data");
