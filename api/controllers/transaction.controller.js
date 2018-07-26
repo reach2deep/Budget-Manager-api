@@ -102,17 +102,20 @@ module.exports.transactionAddNew = function (req, res) {
     //   req.body.attachments.uniqueName ='';     
     // }
 
+    var catSubCat= req.body.category.split('/');
+    var cat= catSubCat[0];
+    var subCat= catSubCat[1];
     Transaction
         .create({
             transactionType: req.body.transactionType,
             transactionDate: req.body.transactionDate,
-            category: req.body.category,
-            subCategory: req.body.subCategory,
+            category: cat,
+            subCategory: subCat,
             account: req.body.account,
             payee: req.body.payee,
             amount: parseFloat(req.body.amount),                 
             notes: req.body.notes,
-            receipts: { name : req.body.attachments.name , uniqueName : req.body.attachments.uniqueName },
+            receipts: { name : req.body.receipts.name , uniqueName : req.body.receipts.uniqueName },
             createdAt : moment().format(),
             createdBy : req.username,
             modifiedAt : null,
@@ -258,7 +261,7 @@ module.exports.transactionUploadImage = function(req,res){
                 console.log(item);
                 // move your file to destination
             });
-            res.end(fileUniqueName);
+            res.end(fileUniqueName,{'Content-Type': 'text/plain'});
            // console.log(' IN RES');
             // res.status(200)
             // .json(fileUniqueName);
