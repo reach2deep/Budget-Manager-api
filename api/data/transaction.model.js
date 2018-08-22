@@ -19,4 +19,9 @@ var transactionSchema = new mongoose.Schema({
       status:String
 });
 
+// transactionSchema.virtual('transactionDate')
+//   .get(function() {
+//     return this.transactionDate.toDateString();
+//   });
+
 mongoose.model('Transaction', transactionSchema);

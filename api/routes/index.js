@@ -95,6 +95,9 @@ router
     .get(ctrlTransaction.transactionGetAll)// get all expenses
     .post(ctrlTransaction.transactionAddNew); // to add new expense    
 router
+    .route('/transactionSearch')
+    .get(ctrlTransaction.searchTransactions)// get all expenses     
+router
     .route('/transaction/:transactionId')
     .get(ctrlTransaction.transactionGetOne) // get expense by Id
     .put(ctrlTransaction.transactionUpdate) // to update expense

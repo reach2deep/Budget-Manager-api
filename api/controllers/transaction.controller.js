@@ -7,6 +7,68 @@ var path = require('path');
 
 
 
+module.exports.searchTransactions = function(req, res){
+
+    
+    const queryParams = req.query;
+    console.log(req.query);
+
+    const courseId = queryParams.courseId,
+          filter = queryParams.filter || '',
+          sortOrder = queryParams.sortOrder,
+          pageNumber = parseInt(queryParams.pageNumber) || 0,
+          pageSize = parseInt(queryParams.pageSize);
+
+     var perPage = pageSize ;
+     var page = pageNumber > 0 ? pageNumber : 0 ;
+
+    // perPage = pageSize ;
+    // totalPages = page.totalElements / page.size;
+     start =  pageNumber * pageSize;
+    // end = Math.min((start + page.size), page.totalElements);
+
+    Transaction
+    .find()
+   // .select('name')
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort({name: 'asc'})
+    .exec(function (err, transactions) {
+        Transaction.count().exec(function (err, count) {
+        res.status(200).json({           
+            totalElements: count
+            , totalPages: count / pageSize
+            , start :pageNumber * pageSize
+            ,end: Math.min((start + pageSize), count)
+            , data: transactions
+        })
+      })
+    })
+
+    
+
+
+//     let lessons = Transaction.find().exec(); // Object.values(LESSONS).filter(lesson => lesson.courseId == courseId).sort((l1, l2) => l1.id - l2.id);
+
+//     // if (filter) {
+//     //    lessons = lessons.filter(lesson => lesson.description.trim().toLowerCase().search(filter.toLowerCase()) >= 0);
+//     // }
+
+//     if (sortOrder == "desc") {
+//         lessons = lessons.reverse();
+//     }
+
+//     const initialPos = pageNumber * pageSize;
+
+//     const lessonsPage = lessons.slice(initialPos, initialPos + pageSize);
+
+//     console.log(lessonsPage);
+//   //  setTimeout(() => {
+//         res.status(200).json({payload: lessonsPage});
+//    // },1000);
+
+
+}
 
 // GET ALL Transaction
 module.exports.transactionGetAll = function (req, res) {

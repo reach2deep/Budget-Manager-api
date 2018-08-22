@@ -24,10 +24,7 @@ module.exports.getAllMasterData = function (req, res) {
             console.log('Found categories', categories.length);
             callback(null, categories);           
         });
-
-            // setTimeout(function() {
-            //     callback(null, 1);
-            // }, 200);
+         
         },
         two: function(callback) {
             console.log('two');
@@ -57,43 +54,4 @@ module.exports.getAllMasterData = function (req, res) {
                      .json(masterData);
         // results is now equals to: {one: 1, two: 2}
     });
-
-//    var masterData={};
-//    var categoryData
-//    var payeeData 
-//     Category
-//         .find()
-//         .exec(function (err, categories) {
-//             if (err) {
-//                 console.log("Error retreiving data");
-//                 res
-//                     .status(500)
-//                     .json(err);
-//             }
-//             console.log('Found categories', categories.length);
-//             masterData.categories=categories;
-//         });
-
-//         Payee
-//         .find()
-//         .exec(function (err, payees) {
-//             if (err) {
-//                 console.log("Error retreiving data");
-//                 res
-//                     .status(500)
-//                     .json(err);
-//             }
-//             console.log('Found payees', payees.length);
-//             //payeeData = payees;
-//             masterData.payees= payees;
-//             res.status(200)
-//             .json(masterData);
-//         });
-
-       //  masterData.category= categoryData;
-       //  masterData.payees= payeeData;
-
-    //    console.log(JSON.stringify(categoryData));
-    //    console.log(JSON.stringify(payeeData));
-      // return res.json('TEST');
 };
