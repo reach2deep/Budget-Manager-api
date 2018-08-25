@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 var Account = mongoose.model('Account');
-
+var moment = require('moment');
 
 // GET ALL ACCOUNT
 module.exports.accountGetAll = function (req, res) {
@@ -9,50 +9,41 @@ module.exports.accountGetAll = function (req, res) {
     console.log('GET the Account');
     console.log(req.query);
 
-    var offset = 0;
-    var count = 5;
-    var maxCount = 10;
+    
+    const queryParams = req.query;
+    console.log(req.query);
 
-    if (req.query && req.query.offset) {
-        offset = parseInt(req.query.offset, 10);
-    }
+    const courseId = queryParams.courseId,
+          filter = queryParams.filter || '',
+          sortOrder = queryParams.sortOrder,
+          pageNumber = parseInt(queryParams.pageNumber) || 0,
+          pageSize = parseInt(queryParams.pageSize);
 
-    if (req.query && req.query.count) {
-        offset = parseInt(req.query.count, 10);
-    }
+     var perPage = pageSize ;
+     var page = pageNumber > 0 ? pageNumber : 0 ;
 
-    if (isNaN(offset) || isNaN(count)) {
-        res
-            .status(400)
-            .json({
-                "message": "Invalid query parameters"
-            });
-        return;
-    }
+    
+     start =  pageNumber * pageSize;
+    
 
-    if (count > maxCount) {
-        res
-            .status(400)
-            .json({
-                "message": "Invalid count parameter"
-            });
-        return;
-    }
     Account
-        .find()
-        .skip(offset)
-        .limit(count)
-        .exec(function (err, accounts) {
-            if (err) {
-                console.log("Error retreiving data");
-                res
-                    .status(500)
-                    .json(err);
-            }
-            console.log('Found accounts', accounts.length);
-            res
-                .json(accounts);
-        });
+    .find()   
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort({name: 'asc'})
+    .exec(function (err, transactions) {
+        Account.count().exec(function (err, count) {
+        res.status(200).json({           
+            totalElements: count
+            , totalPages: count / pageSize
+            , start :pageNumber * pageSize
+            ,end: Math.min((start + pageSize), count)
+            , data: transactions
+        })
+      })
+    })
+
+ 
 };
 
 
@@ -92,11 +83,11 @@ module.exports.accountAddNew = function (req, res) {
 
     Account
         .create({
-            name: req.body.name,
-            description: req.body.description,
-            amount: parseFloat(req.body.amount),
-            notes: req.body.notes,                  
-            createdAt : moment.moment(),
+            transactionDate: req.body.transactionDate,
+            accountName: req.body.accountName,            
+            amount: parseFloat(req.body.amount),            
+            description: req.body.description,                  
+            createdAt : moment().format(),
             createdBy : req.username                       
         }, function (err, account) {
             var response = {
@@ -147,10 +138,10 @@ module.exports.accountUpdate = function (req, res) {
                     .json(response.message);
             } else {                
 
-                account.name= req.body.name,
-                account.description= req.body.description,
-                account.notes= req.body.notes,
+                account.transactionDate= req.body.transactionDate,
+                account.accountName= req.body.accountName,
                 account.amount= parseFloat(req.body.amount),              
+                account.description= req.body.description,
                 account.modifiedAt = moment.moment(),
                 account.modifiedBy = req.username,
 

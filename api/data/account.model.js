@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 
 var accountSchema = new mongoose.Schema({
-      name: String,
-      description: String,
-      amount: Number,      
+      transactionDate: String,
+      accountName: String,
+      amount: Number,
+      description: String,           
       createdAt: Date,
       createdBy: String,
       modifiedAt: Date,
